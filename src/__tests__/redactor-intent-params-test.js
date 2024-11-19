@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 const assertObject = require('assert-object')
 const redactor = require('../redactor')
 const { AsyncRedactor } = require('redact-pii');

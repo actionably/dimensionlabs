@@ -1,15 +1,15 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 "use strict";
 
-if (!process.env.DASHBOT_API_KEY_GENERIC) {
+if (!process.env.DIMENSIONLABS_API_KEY_GENERIC) {
     throw new Error(
-        '"DASHBOT_API_KEY_GENERIC" environment variable must be defined'
+        '"DIMENSIONLABS_API_KEY_GENERIC" environment variable must be defined'
     );
 }
 
-const dashbot = require("../src/dashbot")(process.env.DASHBOT_API_KEY_GENERIC, {
+const dimensionLabs = require("../src/dimensionlabs")(process.env.DIMENSIONLABS_API_KEY_GENERIC, {
     debug: true,
-    urlRoot: process.env.DASHBOT_URL_ROOT
+    urlRoot: process.env.DIMENSIONLABS_URL_ROOT
 }).botcopy;
 
 var readline = require("readline");
@@ -19,7 +19,7 @@ var rl = readline.createInterface({
 });
 
 function ask(question) {
-    const messageForDashbot = {
+    const message = {
         text: question,
         userId: "USERIDHERE123123",
         platformUserJson: {
@@ -32,10 +32,10 @@ function ask(question) {
             whateverJson: "any JSON specific to your platform can be stored here"
         }
     };
-    dashbot.logOutgoing(messageForDashbot);
+    dimensionLabs.logOutgoing(message);
 
     rl.question(question, function(answer) {
-        const messageForDashbot = {
+        const message = {
             text: answer,
             userId: "USERIDHERE123123",
             platformUserJson: {
@@ -48,7 +48,7 @@ function ask(question) {
                 whateverJson: "any JSON specific to your platform can be stored here"
             }
         };
-        dashbot.logIncoming(messageForDashbot);
+        dimensionLabs.logIncoming(message);
         if (answer === "quit") {
             rl.close();
             return;

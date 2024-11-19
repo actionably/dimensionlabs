@@ -1,8 +1,8 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_FACEBOOK) {
-  throw new Error('"DASHBOT_API_KEY_FACEBOOK" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_FACEBOOK) {
+  throw new Error('"DIMENSIONLABS_API_KEY_FACEBOOK" environment variable must be defined');
 }
 if (!process.env.FACEBOOK_VERIFY_TOKEN) {
   throw new Error('"FACEBOOK_VERIFY_TOKEN" environment variable must be defined');
@@ -16,8 +16,8 @@ var bodyParser = require('body-parser');
 var request = require('request');
 const fs = require('fs');
 
-var urlRoot = process.env.DASHBOT_URL_ROOT || 'https://tracker.dashbot.io/track';
-var apiKey = process.env.DASHBOT_API_KEY_FACEBOOK;
+var urlRoot = process.env.DIMENSIONLABS_URL_ROOT || 'https://tracker.dimensionlabs.io/track';
+var apiKey = process.env.DIMENSIONLABS_API_KEY_FACEBOOK;
 var version = JSON.parse(fs.readFileSync(__dirname+'/../package.json')).version+'-rest';
 var debug = true;
 
@@ -37,7 +37,7 @@ app.post(webHookPath, function(req, res) {
   var url = urlRoot + '?apiKey=' + apiKey + '&type=incoming&platform=facebook&v=' + version;
   var data = req.body;
   if (debug) {
-    console.log('Dashbot Incoming: ' + url);
+    console.log('DimensionLabs Incoming: ' + url);
     console.log(JSON.stringify(data, null, 2));
   }
   request({
@@ -67,7 +67,7 @@ app.post(webHookPath, function(req, res) {
       requestData.responseBody = response.body;
       console.log('response', JSON.stringify(response, null, 2));
       if (debug) {
-        console.log('Dashbot outgoing: ' + url);
+        console.log('DimensionLabs Outgoing: ' + url);
         console.log(JSON.stringify(requestData, null, 2));
       }
       request({

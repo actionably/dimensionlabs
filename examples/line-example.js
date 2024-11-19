@@ -1,8 +1,8 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_LINE) {
-  throw new Error('"DASHBOT_API_KEY_LINE" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_LINE) {
+  throw new Error('"DIMENSIONLABS_API_KEY_LINE" environment variable must be defined');
 }
 if (!process.env.LINE_CHANNEL_ACCESS_TOKEN) {
   throw new Error('"LINE_CHANNEL_ACCESS_TOKEN" environment variable must be defined');
@@ -14,7 +14,7 @@ if (!process.env.LINE_CHANNEL_SECRET) {
 var express = require('express');
 var line = require('@line/bot-sdk');
 
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_LINE,
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_LINE,
   { debug:true }).line;
 
 const app = express();
@@ -26,14 +26,14 @@ const client = new line.Client(config);
 
 app.use('/webhook', line.middleware(config), (req, res) => {
   req.body.events.map(event => {
-    dashbot.logIncoming(event);
+    dimensionLabs.logIncoming(event);
     if (event.type === 'message' && event.message.type === 'text') {
       var reply = {
         type: 'text',
         text: event.message.text
       };
       return client.replyMessage(event.replyToken, reply)
-        .then(() => dashbot.logOutgoing(event.source, reply))
+        .then(() => dimensionLabs.logOutgoing(event.source, reply))
         .catch(err => console.log(err));
     }
   });

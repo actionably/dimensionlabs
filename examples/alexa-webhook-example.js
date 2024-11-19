@@ -1,16 +1,16 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_ALEXA) {
-  throw new Error('"DASHBOT_API_KEY_ALEXA" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_ALEXA) {
+  throw new Error('"DIMENSIONLABS_API_KEY_ALEXA" environment variable must be defined');
 }
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_ALEXA, {
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_ALEXA, {
   debug: true,
-  urlRoot: process.env.DASHBOT_URL_ROOT
+  urlRoot: process.env.DIMENSIONLABS_URL_ROOT
 }).alexa;
 
 const app = express();
@@ -22,7 +22,7 @@ app.get(webHookPath, function(req, res) {
 });
 
 app.post(webHookPath, function(req, res) {
-  dashbot.logIncoming(req.body);
+  dimensionLabs.logIncoming(req.body);
 
   const responseBody = {
     'version': '1.0',
@@ -42,7 +42,7 @@ app.post(webHookPath, function(req, res) {
   };
 
 
-  dashbot.logOutgoing(req.body, responseBody)
+  dimensionLabs.logOutgoing(req.body, responseBody)
 
   res.send(responseBody);
 

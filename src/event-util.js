@@ -1,7 +1,7 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
-function DashBotEventUtil() {
+function DimensionLabsEventUtil() {
   var that = this;
 
   that.createCustomEvent = function(eventName, userId, conversationId, extraInfo) {
@@ -43,4 +43,4 @@ function DashBotEventUtil() {
   }
 }
 
-module.exports = DashBotEventUtil
+module.exports = DimensionLabsEventUtil

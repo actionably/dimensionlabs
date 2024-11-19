@@ -1,19 +1,19 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
 var makeRequest = require('./make-request')
-var DashBotBase = require('./dashbot-base');
+var DimensionLabsBase = require('./dimensionlabs-base');
 var VERSION = require('../package.json').version;
 
-function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
-  var that = new DashBotBase(apiKey, urlRoot, debug, printErrors, config, 'google');
+function DimensionlabsGoogle(apiKey, urlRoot, debug, printErrors, config) {
+  var that = new DimensionLabsBase(apiKey, urlRoot, debug, printErrors, config, 'google');
 
   that.assistantHandle = null;
   that.requestBody = null;
 
   that.configHandler = function(assistant, incomingMetadata){
     if (assistant == null) {
-      throw new Error('YOU MUST SUPPLY THE ASSISTANT OBJECT TO DASHBOT!');
+      throw new Error('YOU MUST SUPPLY THE ASSISTANT OBJECT TO DIMENSIONLABS!');
     }
 
     that.assistantHandle = assistant;
@@ -25,37 +25,37 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
 
     if (typeof assistant.doResponse_ !== 'undefined') {
       that.assistantHandle.originalDoResponse = assistant.doResponse_;
-      that.assistantHandle.doResponse_ = dashbotDoResponse;
+      that.assistantHandle.doResponse_ = dimensionLabsDoResponse;
       that.requestBody = assistant.body_;
       that.logIncoming(assistant.body_, incomingMetadata);
     } else if (typeof assistant.handleRequest !== 'undefined') {
       // dialogflow-fulfillment npm
       that.assistantHandle.client.orginalSend = assistant.client.sendJson_;
-      that.assistantHandle.client.sendJson_ = dashbotSend;
+      that.assistantHandle.client.sendJson_ = dimensionLabsSend;
       that.requestBody = assistant.request_.body;
       that.logIncoming(assistant.request_.body, incomingMetadata);
     } else {
       that.assistantHandle.originalhandler = assistant.handler.bind(assistant);
-      that.assistantHandle.handler = dashbotDoResponseV2;
+      that.assistantHandle.handler = dimensionLabsDoResponseV2;
       that.incomingMetadata = incomingMetadata
     }
   };
 
-  function dashbotSend(responseJson) {
+  function dimensionLabsSend(responseJson) {
     that.logOutgoing(that.requestBody, responseJson, that.outgoingMetadata, that.outgoingIntent)
     that.outgoingMetadata = null
     that.outgoingIntent = null
     that.assistantHandle.client.orginalSend(responseJson)
   }
 
-  function dashbotDoResponse(response, responseCode) {
+  function dimensionLabsDoResponse(response, responseCode) {
     that.logOutgoing(that.requestBody, response, that.outgoingMetadata, that.outgoingIntent)
     that.outgoingMetadata = null
     that.outgoingIntent = null
     that.assistantHandle.originalDoResponse(response, responseCode);
   }
 
-  function dashbotDoResponseV2(body, headers) {
+  function dimensionLabsDoResponseV2(body, headers) {
     that.logIncoming(body, that.incomingMetadata);
     return that.assistantHandle.originalhandler(body, headers).then(function(response){
       that.logOutgoing(body, response.body, that.outgoingMetadata, that.outgoingIntent)
@@ -69,7 +69,7 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=incoming&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Incoming: ' + url);
+      console.log('DimensionLabs Incoming: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -83,7 +83,7 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=outgoing&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Outgoing: ' + url);
+      console.log('DimensionLabs Outgoing: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -157,13 +157,13 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
     that
       .setFulfillmentLib('@assistant/conversation')
       .attachConversationApiHandler(app, incomingMetadata)
-      .attachDashbotHandle(app)
+      .attachDimensionLabsHandle(app)
 
     return true;
   }
 
-  that.attachDashbotHandle = function(app) {
-    app.handle('dashbot', conv => { return conv })
+  that.attachDimensionLabsHandle = function(app) {
+    app.handle('dimensionLabs', conv => { return conv })
     return that
   }
 
@@ -175,7 +175,7 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
   that.attachConversationApiHandler = function(app, incomingMetadata) {
     var _handler = app.handler.bind(app)
 
-    const dashbot = async (body, headers, metadata) => {
+    const dimensionLabs = async (body, headers, metadata) => {
       var resp = await _handler(body, headers, metadata)
 
       that.logIncoming({ request: body,  fulfillmentLib: that.fulfillmentLib }, incomingMetadata)
@@ -190,7 +190,7 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
       return resp
     }
 
-    app.handler = dashbot
+    app.handler = dimensionLabs
     return that
   }
 
@@ -198,4 +198,4 @@ function DashBotGoogle(apiKey, urlRoot, debug, printErrors, config) {
 }
 
 
-module.exports = DashBotGoogle;
+module.exports = DimensionlabsGoogle;

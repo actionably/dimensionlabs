@@ -1,12 +1,12 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
 var _ = require('lodash');
 var EventLogger = require('./event-logger')
-var DashBotEventUtil = require('./event-util')
+var DimensionLabsEventUtil = require('./event-util')
 
 
-function DashBotBase(apiKey, urlRoot, debug, printErrors, config, platform) {
+function DimensionlabsBase(apiKey, urlRoot, debug, printErrors, config, platform) {
   var that = this;
   that.apiKey = apiKey;
   that.platform = platform;
@@ -15,7 +15,7 @@ function DashBotBase(apiKey, urlRoot, debug, printErrors, config, platform) {
   that.printErrors = printErrors;
   that.eventLogger = new EventLogger(apiKey, urlRoot, debug, printErrors, config, platform);
   that.config = config;
-  that.eventUtil = new DashBotEventUtil()
+  that.eventUtil = new DimensionLabsEventUtil()
 
   that.logEvent = function(data) {
     return that.eventLogger.logEvent(data);
@@ -23,4 +23,4 @@ function DashBotBase(apiKey, urlRoot, debug, printErrors, config, platform) {
 
 }
 
-module.exports = DashBotBase;
+module.exports = DimensionlabsBase;

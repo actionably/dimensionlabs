@@ -1,6 +1,6 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
-if (!process.env.DASHBOT_API_KEY_MICROSOFT) {
-  throw new Error('"DASHBOT_API_KEY_MICROSOFT" environment variable must be defined');
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
+if (!process.env.DIMENSIONLABS_API_KEY_MICROSOFT) {
+  throw new Error('"DIMENSIONLABS_API_KEY_MICROSOFT" environment variable must be defined');
 }
 
 const express = require('express');
@@ -18,11 +18,11 @@ const adapter = new BotFrameworkAdapter({
   appPassword: process.env.MICROSOFT_APP_PASSWORD
 });
 
-// create dashbot object with api key.
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_MICROSOFT,
-  {debug:true, urlRoot: process.env.DASHBOT_URL_ROOT}).microsoft
-// add dashbot middleware
-adapter.use(dashbot.middleware())
+// create dimensionLabs object with api key.
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_MICROSOFT,
+  {debug:true, urlRoot: process.env.DIMENSIONLABS_URL_ROOT}).microsoft
+// add dimensionLabs middleware
+adapter.use(dimensionLabs.middleware())
 
 
 // Add conversation state middleware

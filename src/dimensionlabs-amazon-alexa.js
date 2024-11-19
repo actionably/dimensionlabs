@@ -1,14 +1,14 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 DimensionLabs Inc All rights reserved */
 'use strict'
 
 var _ = require('lodash');
 var meld = require('meld');
-var DashBotBase = require('./dashbot-base');
+var DimensionLabsBase = require('./dimensionlabs-base');
 
 var VERSION = require('../package.json').version;
 
-function DashBotAmazonAlexa(apiKey, urlRoot, debug, printErrors, config) {
-  var that = new DashBotBase(apiKey, urlRoot, debug, printErrors, config, 'alexa');
+function DimensionlabsAmazonAlexa(apiKey, urlRoot, debug, printErrors, config) {
+  var that = new DimensionLabsBase(apiKey, urlRoot, debug, printErrors, config, 'alexa');
 
   that.makeRequest = meld.around(require('./make-request'), require('./ignore-users')(config.ignoreUserIds, 'event.session.user.userId'));
 
@@ -19,7 +19,7 @@ function DashBotAmazonAlexa(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=incoming&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Incoming: ' + url);
+      console.log('DimensionLabs Incoming: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
 
@@ -34,7 +34,7 @@ function DashBotAmazonAlexa(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=outgoing&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Outgoing: ' + url);
+      console.log('DimensionLabs Outgoing: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return that.makeRequest({
@@ -100,7 +100,7 @@ function DashBotAmazonAlexa(apiKey, urlRoot, debug, printErrors, config) {
     that.outgoingIntent = null
     that.outgoingMetadata = null
 
-    // wait for everything to be sent off to dashbot before proceeding due to lambda
+    // wait for everything to be sent off to dimensionLabs before proceeding due to lambda
     // not allowing the event loop to drain before terminating execution.
     Promise.all([logIncoming, logOutgoing]).then(function() {
       joinpoint.proceed();
@@ -197,7 +197,7 @@ function loadDashbotLogger(config) {
       throw e;
     }
     console.error(e)
-    console.log('Resuming sending message to Dashbot. \nPlease install dashbot-logger for the log integration.')
+    console.log('Resuming sending message to DimensionLabs. \nPlease install dashbot-logger for the log integration.')
     return null;
   }
 }
@@ -231,4 +231,4 @@ const cleanContext = function(context) {
   return context
 }
 
-module.exports = DashBotAmazonAlexa;
+module.exports = DimensionlabsAmazonAlexa;

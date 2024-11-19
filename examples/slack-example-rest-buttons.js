@@ -1,8 +1,8 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_SLACK) {
-  throw new Error('"DASHBOT_API_KEY_SLACK" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_SLACK) {
+  throw new Error('"DIMENSIONLABS_API_KEY_SLACK" environment variable must be defined');
 }
 if (!process.env.SLACK_BOT_TOKEN) {
   throw new Error('"SLACK_BOT_TOKEN" environment variable must be defined');
@@ -18,8 +18,8 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-var urlRoot = process.env.DASHBOT_URL_ROOT || 'https://tracker.dashbot.io/track';
-var apiKey = process.env.DASHBOT_API_KEY_SLACK;
+var urlRoot = process.env.DIMENSIONLABS_URL_ROOT || 'https://tracker.dimensionlabs.io/track';
+var apiKey = process.env.DIMENSIONLABS_API_KEY_SLACK;
 var version = JSON.parse(fs.readFileSync(__dirname+'/../package.json')).version+'-rest';
 var debug = true;
 
@@ -30,10 +30,10 @@ var baseMessage = null;
 rp('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, function(error, response) {
   const parsedData = JSON.parse(response.body);
 
-  // Tell dashbot when you connect.
+  // Tell dimensionLabs when you connect.
   var url = urlRoot + '?apiKey=' + apiKey + '&type=connect&platform=slack&v=' + version;
   if (debug) {
-    console.log('Dashbot Connect: ' + url);
+    console.log('DimensionLabs Connect: ' + url);
     console.log(JSON.stringify(parsedData, null, 2));
   }
   rp({
@@ -58,12 +58,12 @@ rp('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, functio
     connection.on('message', function(message) {
       const parsedMessage = JSON.parse(message.utf8Data);
 
-      // Tell dashbot when a message arrives
+      // Tell dimensionLabs when a message arrives
       var url = urlRoot + '?apiKey=' + apiKey + '&type=incoming&platform=slack&v=' + version;
       var toSend = _.clone(baseMessage);
       toSend.message = parsedMessage;
       if (debug) {
-        console.log('Dashbot incoming: ' + url);
+        console.log('DimensionLabs Incoming: ' + url);
         console.log(JSON.stringify(toSend, null, 2));
       }
       rp({
@@ -98,12 +98,12 @@ rp('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, functio
             }]
           };
 
-          // Tell dashbot about your response
+          // Tell dimensionLabs about your response
           var url = urlRoot + '?apiKey=' + apiKey + '&type=outgoing&platform=slack&v=' + version;
           var toSend = _.clone(baseMessage);
           toSend.message = _.cloneDeep(reply);
           if (debug) {
-            console.log('Dashbot outgoing: ' + url);
+            console.log('DimensionLabs Outgoing: ' + url);
             console.log(JSON.stringify(toSend, null, 2));
           }
           rp({
@@ -126,12 +126,12 @@ rp('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, functio
             channel: parsedMessage.channel
           };
 
-          // Tell dashbot about your response
+          // Tell dimensionLabs about your response
           var url = urlRoot + '?apiKey=' + apiKey + '&type=outgoing&platform=slack&v=' + version;
           var toSend = _.clone(baseMessage);
           toSend.message = reply;
           if (debug) {
-            console.log('Dashbot outgoing: ' + url);
+            console.log('DimensionLabs Outgoing: ' + url);
             console.log(JSON.stringify(toSend, null, 2));
           }
           rp({
@@ -157,12 +157,12 @@ ws.use(bodyParser.urlencoded({ extended: true }));
 
 ws.route('/slack/receive').post(function(req, res) {
   var payload = JSON.parse(req.body.payload)
-  // Tell dashbot about the button click
+  // Tell dimensionLabs about the button click
   var url = urlRoot + '?apiKey=' + apiKey + '&type=incoming&platform=slack&v=' + version;
   var toSend = _.clone(baseMessage);
   toSend.message = _.cloneDeep(payload);
   if (debug) {
-    console.log('Dashbot incoming: ' + url);
+    console.log('DimensionLabs Incoming: ' + url);
     console.log(JSON.stringify(toSend, null, 2));
   }
   rp({
@@ -171,7 +171,7 @@ ws.route('/slack/receive').post(function(req, res) {
     json: toSend
   });
 
-  // you need to set the channel on the reply to dashbot (even though slack doesn't always require it)
+  // you need to set the channel on the reply to dimensionLabs (even though slack doesn't always require it)
   const reply = {
     channel: payload.channel.id
   };
@@ -186,12 +186,12 @@ ws.route('/slack/receive').post(function(req, res) {
     rp.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
   }
 
-  // send the reply to dashbot
+  // send the reply to dimensionLabs
   var url = urlRoot + '?apiKey=' + apiKey + '&type=outgoing&platform=slack&v=' + version;
   var toSend = _.clone(baseMessage);
   toSend.message = _.cloneDeep(reply);
   if (debug) {
-    console.log('Dashbot outgoing: ' + url);
+    console.log('DimensionLabs Outgoing: ' + url);
     console.log(JSON.stringify(toSend, null, 2));
   }
   rp({

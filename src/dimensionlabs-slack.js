@@ -1,14 +1,14 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
 var _ = require('lodash');
 var makeRequest = require('./make-request');
-var DashBotBase = require('./dashbot-base');
+var DimensionLabsBase = require('./dimensionlabs-base');
 
 var VERSION = require('../package.json').version;
 
-function DashBotSlack(apiKey, urlRoot, debug, printErrors, config) {
-  var that = new DashBotBase(apiKey, urlRoot, debug, printErrors, config, 'slack');
+function DimensionlabsSlack(apiKey, urlRoot, debug, printErrors, config) {
+  var that = new DimensionLabsBase(apiKey, urlRoot, debug, printErrors, config, 'slack');
 
   function logIncomingInternal(data, source) {
     if (data.message.type === 'reconnect_url') {
@@ -18,7 +18,7 @@ function DashBotSlack(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=incoming&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Incoming: ' + url);
+      console.log('DimensionLabs Incoming: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -32,7 +32,7 @@ function DashBotSlack(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=outgoing&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Outgoing: ' + url);
+      console.log('DimensionLabs Outgoing: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     data = _.clone(data);
@@ -88,7 +88,7 @@ function DashBotSlack(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=connect&platform=' + that.platform + '&v=' + VERSION + '-npm';
     if (that.debug) {
-      console.log('Dashbot Connect: ' + url);
+      console.log('DimensionLabs Connect: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -121,4 +121,4 @@ function DashBotSlack(apiKey, urlRoot, debug, printErrors, config) {
   return that;
 }
 
-module.exports = DashBotSlack;
+module.exports = DimensionlabsSlack;

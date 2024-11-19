@@ -1,12 +1,12 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_GENERIC) {
-  throw new Error('"DASHBOT_API_KEY_GENERIC" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_GENERIC) {
+  throw new Error('"DIMENSIONLABS_API_KEY_GENERIC" environment variable must be defined');
 }
 
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_GENERIC,
-  {debug:true, urlRoot: process.env.DASHBOT_URL_ROOT}).generic
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_GENERIC,
+  {debug:true, urlRoot: process.env.DIMENSIONLABS_URL_ROOT}).generic
 
 var readline = require('readline');
 var rl = readline.createInterface({
@@ -15,13 +15,13 @@ var rl = readline.createInterface({
 });
 
 function ask(question) {
-  dashbot.logOutgoing(
-    dashbot.messageUtil.messageWithText('USERIDHERE111', question)
+  dimensionLabs.logOutgoing(
+    dimensionLabs.messageUtil.messageWithText('USERIDHERE111', question)
   );
 
   rl.question(question, function(answer) {
-    dashbot.logIncoming(
-      dashbot.messageUtil.messageWithText('USERIDHERE111', answer)
+    dimensionLabs.logIncoming(
+      dimensionLabs.messageUtil.messageWithText('USERIDHERE111', answer)
     )
     if (answer === 'quit') {
       rl.close();

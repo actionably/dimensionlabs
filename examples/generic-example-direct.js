@@ -1,8 +1,8 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_GENERIC) {
-  throw new Error('"DASHBOT_API_KEY_GENERIC" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_GENERIC) {
+  throw new Error('"DIMENSIONLABS_API_KEY_GENERIC" environment variable must be defined');
 }
 
 var request = require('request');
@@ -14,11 +14,11 @@ var rl = readline.createInterface({
 
 function ask(question) {
   request({
-    uri: process.env.DASHBOT_URL_ROOT,
+    uri: process.env.DIMENSIONLABS_URL_ROOT,
     qs : {
       type: 'outgoing',
       platform: 'generic',
-      apiKey: process.env.DASHBOT_API_KEY_GENERIC,
+      apiKey: process.env.DIMENSIONLABS_API_KEY_GENERIC,
       v: version
     },
     method: 'POST',
@@ -29,11 +29,11 @@ function ask(question) {
   });
   rl.question(question, function(answer) {
     request({
-      uri: process.env.DASHBOT_URL_ROOT,
+      uri: process.env.DIMENSIONLABS_URL_ROOT,
       qs : {
         type: 'incoming',
         platform: 'generic',
-        apiKey: process.env.DASHBOT_API_KEY_GENERIC,
+        apiKey: process.env.DIMENSIONLABS_API_KEY_GENERIC,
         v: version
       },
       method: 'POST',

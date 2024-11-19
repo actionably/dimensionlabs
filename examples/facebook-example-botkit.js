@@ -1,8 +1,8 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_FACEBOOK) {
-  throw new Error('"DASHBOT_API_KEY_FACEBOOK" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_FACEBOOK) {
+  throw new Error('"DIMENSIONLABS_API_KEY_FACEBOOK" environment variable must be defined');
 }
 if (!process.env.FACEBOOK_VERIFY_TOKEN) {
   throw new Error('"FACEBOOK_VERIFY_TOKEN" environment variable must be defined');
@@ -11,8 +11,8 @@ if (!process.env.FACEBOOK_PAGE_TOKEN) {
   throw new Error('"FACEBOOK_PAGE_TOKEN" environment variable must be defined');
 }
 
-var dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_FACEBOOK,
-  {urlRoot: process.env.DASHBOT_URL_ROOT, debug:true}).facebook;
+var dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_FACEBOOK,
+  {urlRoot: process.env.DIMENSIONLABS_URL_ROOT, debug:true}).facebook;
 
 
 var port = 4000;
@@ -27,8 +27,8 @@ var controller = Botkit.facebookbot({
 var bot = controller.spawn({
 });
 
-controller.middleware.receive.use(dashbot.receive);
-controller.middleware.send.use(dashbot.send);
+controller.middleware.receive.use(dimensionLabs.receive);
+controller.middleware.send.use(dimensionLabs.send);
 
 
 // if you are already using Express, you can use your own server instance...

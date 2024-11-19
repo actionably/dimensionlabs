@@ -1,16 +1,16 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_GOOGLE) {
-  throw new Error('"DASHBOT_API_KEY_GOOGLE" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_GOOGLE) {
+  throw new Error('"DIMENSIONLABS_API_KEY_GOOGLE" environment variable must be defined');
 }
 
 var express = require('express');
 var bodyParser = require('body-parser');
 var ActionsSdkApp = require('actions-on-google').ActionsSdkApp;
 
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_GOOGLE,
-  {urlRoot: process.env.DASHBOT_URL_ROOT, debug:true}).google;
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_GOOGLE,
+  {urlRoot: process.env.DIMENSIONLABS_URL_ROOT, debug:true}).google;
 
 var app = express();
 
@@ -39,7 +39,7 @@ var server = app.listen(process.env.PORT || '8090', function () {
 
 function helloAction(request, response) {
   const assistant = new ActionsSdkApp({request: request, response: response});
-  dashbot.configHandler(assistant);
+  dimensionLabs.configHandler(assistant);
 
   if (assistant.getRawInput().toLowerCase() == "talk to hello action")
     assistant.askForText({ text_to_speech: "Hi! Say anything, and I will repeat it once." });
@@ -58,7 +58,7 @@ const gameMap = {}
 
 function guessNumber(request, response) {
   const assistant = new ActionsSdkAssistant({request: request, response: response});
-  dashbot.configHandler(assistant);
+  dimensionLabs.configHandler(assistant);
 
   const userId = request.body.user.user_id
   if (!userId) {

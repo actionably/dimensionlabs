@@ -1,15 +1,15 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 DimensionLabs Inc All rights reserved */
 'use strict'
 
 var _ = require('lodash');
 var uuid = require('uuid')
 var makeRequest = require('./make-request');
-var DashBotBase = require('./dashbot-base');
+var DimensionLabsBase = require('./dimensionlabs-base');
 
 var VERSION = require('../package.json').version;
 
-function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
-  var that = new DashBotBase(apiKey, urlRoot, debug, printErrors, config, 'kik');
+function DimensionlabsKik(apiKey, urlRoot, debug, printErrors, config) {
+  var that = new DimensionLabsBase(apiKey, urlRoot, debug, printErrors, config, 'kik');
 
   that.botHandle = null;
   that.kikUsername = null;
@@ -18,15 +18,15 @@ function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
   that.configHandler = function(bot) {
     that.botHandle = bot;
     that.botHandle.originalSend = bot.send;
-    that.botHandle.send = dashBotSend;
+    that.botHandle.send = dimensionLabsSend;
     that.botHandle.originalBroadcast = bot.broadcast;
-    that.botHandle.broadcast = dashBotBroadcast;
+    that.botHandle.broadcast = dimensionLabsBroadcast;
     that.kikUsername = bot.username;
     that.kikApiKey = bot.apiKey;
   };
   that.logHandler = function(incoming, next) {
     if (!that.botHandle || that.botHandle == null) {
-      throw new Error('YOU MUST SUPPLY THE BOT OBJECT TO DASHBOT!');
+      throw new Error('YOU MUST SUPPLY THE BOT OBJECT TO DIMENSIONLABS!');
     }
     var data = {
       apiKey: incoming.bot.apiKey,
@@ -36,7 +36,7 @@ function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
     internalLogIncoming(data, 'kiknpm');
     next();
   };
-  function dashBotSend(messages, recipient, chatId) {
+  function dimensionLabsSend(messages, recipient, chatId) {
     if (!!messages && !_.isArray(messages)) {
       messages = [messages];
     }
@@ -77,7 +77,7 @@ function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
     return kikMessage;
   }
 
-  function dashBotBroadcast(messages, recipients) {
+  function dimensionLabsBroadcast(messages, recipients) {
     if (!!messages && !_.isArray(messages)) {
       messages = [messages];
     }
@@ -103,7 +103,7 @@ function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=incoming&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Incoming: ' + url);
+      console.log('DimensionLabs Incoming: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -117,7 +117,7 @@ function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=outgoing&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Outgoing: ' + url);
+      console.log('DimensionLabs Outgoing: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -148,4 +148,4 @@ function DashBotKik(apiKey, urlRoot, debug, printErrors, config) {
   return that;
 }
 
-module.exports = DashBotKik;
+module.exports = DimensionlabsKik;

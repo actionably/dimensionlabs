@@ -1,8 +1,8 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_FACEBOOK) {
-  throw new Error('"DASHBOT_API_KEY_FACEBOOK" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_FACEBOOK) {
+  throw new Error('"DIMENSIONLABS_API_KEY_FACEBOOK" environment variable must be defined');
 }
 if (!process.env.FACEBOOK_VERIFY_TOKEN) {
   throw new Error('"FACEBOOK_VERIFY_TOKEN" environment variable must be defined');
@@ -14,9 +14,9 @@ if (!process.env.FACEBOOK_PAGE_TOKEN) {
 const express = require('express');
 const bodyParser = require('body-parser');
 const fetch = require('isomorphic-fetch');
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_FACEBOOK,
-  {debug:true, urlRoot: process.env.DASHBOT_URL_ROOT, redact: process.env.DASHBOT_REDACT}).facebook
-const dashbotEventUtil = dashbot.eventUtil
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_FACEBOOK,
+  {debug:true, urlRoot: process.env.DIMENSIONLABS_URL_ROOT, redact: process.env.DIMENSIONLABS_REDACT}).facebook
+const dimensionLabsEventUtil = dimensionLabs.eventUtil
 
 const app = express();
 app.use(bodyParser.json());
@@ -37,7 +37,7 @@ app.post(webHookPath, function(req, res) {
     difference: null
   }
 
-  dashbot.logIncoming(req.body);
+  dimensionLabs.logIncoming(req.body);
 
   const messagingEvents = req.body.entry[0].messaging;
   if (messagingEvents && messagingEvents.length && messagingEvents[0].message && messagingEvents[0].message.text) {
@@ -70,11 +70,11 @@ app.post(webHookPath, function(req, res) {
       if(response.ok) {
         res.sendStatus(200);
         response.json().then(function(responseJson) {
-          dashbot.logOutgoing(requestData, responseJson);
+          dimensionLabs.logOutgoing(requestData, responseJson);
         })
         functionTiming.end = new Date().getTime();
         functionTiming.difference = functionTiming.end - functionTiming.start;
-        dashbot.logEvent(dashbotEventUtil.createCustomEvent('functionTiming', sender, sender, functionTiming))
+        dimensionLabs.logEvent(dimensionLabsEventUtil.createCustomEvent('functionTiming', sender, sender, functionTiming))
       }
     });
   } else {

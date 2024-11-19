@@ -1,12 +1,12 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
-const dashbot = require('../dashbot')('mockapikey',
+const dimensionLabs = require('../dimensionlabs')('mockapikey',
   {urlRoot: 'http://localhost:3000', debug:true}).slack;
 
 const assert = require('assert')
 
-describe('DashBotSlack', function() {
+describe('Slack', function() {
   describe('.addTeamInfo()', function() {
     it('GIVEN there is no team info information ' +
         'WHEN constructing the response ' +
@@ -23,7 +23,7 @@ describe('DashBotSlack', function() {
       const message = {
       }
 
-      const retValue = dashbot._addTeamInfo(bot, message)
+      const retValue = dimensionLabs._addTeamInfo(bot, message)
 
       assert.equal(retValue.team.id, 'unknown')
       assert.equal(retValue.team.name, 'unknown')

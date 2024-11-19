@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
 var _ = require('lodash');
@@ -6,7 +6,7 @@ var makeRequest = require('./make-request')
 
 var VERSION = require('../package.json').version;
 
-function DashbotMicrosoftDeprecated(apiKeyMap, urlRoot, debug, printErrors, config) {
+function DimensionlabsMicrosoftDeprecated(apiKeyMap, urlRoot, debug, printErrors, config) {
   var that = this;
   that.apiKeyMap = apiKeyMap;
   that.urlRoot = urlRoot;
@@ -22,13 +22,13 @@ function DashbotMicrosoftDeprecated(apiKeyMap, urlRoot, debug, printErrors, conf
 
   // middleware endpoints
   that.receive = function(session, next) {
-    logDashbot(session, true, next);
+    logDimensionLabs(session, true, next);
   };
   that.send = function(session, next) {
-    logDashbot(session, false, next);
+    logDimensionLabs(session, false, next);
   };
 
-  function logDashbot (session, isIncoming, next) {
+  function logDimensionLabs (session, isIncoming, next) {
     if (that.debug) {
       //console.log('\n*** MSFTBK Debug: ', (isIncoming ? 'incoming' : 'outgoing'), JSON.stringify(session, null, 2))
     }
@@ -47,7 +47,7 @@ function DashbotMicrosoftDeprecated(apiKeyMap, urlRoot, debug, printErrors, conf
 
     var apiKey = apiKeyMap[platform]
     if (!apiKey) {
-      console.warn('**** Warning: No Dashbot apiKey for platform:(' + platform + ') Data not saved. ')
+      console.warn('**** Warning: No dimensionLabs apiKey for platform:(' + platform + ') Data not saved. ')
       next();
       return;
     }
@@ -61,9 +61,9 @@ function DashbotMicrosoftDeprecated(apiKeyMap, urlRoot, debug, printErrors, conf
       apiKey + '&type=' + (isIncoming ? 'incoming' : 'outgoing') +
       '&platform=' + platform + '&v=' + VERSION + '-npm';
     if (that.debug) {
-      console.log('\n*** Dashbot MSFT Bot Framework Debug **');
+      console.log('\n*** dimensionLabs MSFT Bot Framework Debug **');
       console.log(' *** platform is ' + platform);
-      console.log(' *** Dashbot Url: ' + url);
+      console.log(' *** dimensionLabs Url: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     makeRequest({
@@ -77,4 +77,4 @@ function DashbotMicrosoftDeprecated(apiKeyMap, urlRoot, debug, printErrors, conf
 
 }
 
-module.exports = DashbotMicrosoftDeprecated;
+module.exports = DimensionlabsMicrosoftDeprecated;

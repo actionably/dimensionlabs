@@ -1,10 +1,10 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict'
 
 var makeRequest = require('./make-request');
 var VERSION = require('../package.json').version;
 
-function DashBotEventLogger(apiKey, urlRoot, debug, printErrors, config, platform) {
+function DimensionLabsEventLogger(apiKey, urlRoot, debug, printErrors, config, platform) {
   var that = this;
   that.apiKey = apiKey;
   that.debug = debug;
@@ -18,7 +18,7 @@ function DashBotEventLogger(apiKey, urlRoot, debug, printErrors, config, platfor
     var url = that.urlRoot + '?apiKey=' +
       that.apiKey + '&type=event&platform=' + that.platform + '&v=' + VERSION + '-' + source;
     if (that.debug) {
-      console.log('Dashbot Event: ' + url);
+      console.log('DimensionLabs Event: ' + url);
       console.log(JSON.stringify(data, null, 2));
     }
     return makeRequest({
@@ -29,4 +29,4 @@ function DashBotEventLogger(apiKey, urlRoot, debug, printErrors, config, platfor
   }
 }
 
-module.exports = DashBotEventLogger
+module.exports = DimensionLabsEventLogger

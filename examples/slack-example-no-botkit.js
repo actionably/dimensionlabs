@@ -1,15 +1,15 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
-if (!process.env.DASHBOT_API_KEY_SLACK) {
-  throw new Error('"DASHBOT_API_KEY_SLACK" environment variable must be defined');
+if (!process.env.DIMENSIONLABS_API_KEY_SLACK) {
+  throw new Error('"DIMENSIONLABS_API_KEY_SLACK" environment variable must be defined');
 }
 if (!process.env.SLACK_BOT_TOKEN) {
   throw new Error('"SLACK_BOT_TOKEN" environment variable must be defined');
 }
 
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_SLACK,
-  {urlRoot: process.env.DASHBOT_URL_ROOT, debug:true}).slack;
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_SLACK,
+  {urlRoot: process.env.DIMENSIONLABS_URL_ROOT, debug:true}).slack;
 const request = require('request');
 var WebSocketClient = require('websocket').client;
 
@@ -19,8 +19,8 @@ var client = new WebSocketClient();
 request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, function(error, response) {
   const parsedData = JSON.parse(response.body);
 
-  // Tell dashbot when you connect.
-  dashbot.logConnect(parsedData);
+  // Tell dimensionLabs when you connect.
+  dimensionLabs.logConnect(parsedData);
 
   const bot = parsedData.self;
   const team = parsedData.team;
@@ -29,8 +29,8 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
     connection.on('message', function(message) {
       const parsedMessage = JSON.parse(message.utf8Data);
 
-      // Tell dashbot when a message arrives
-      dashbot.logIncoming(bot, team, parsedMessage);
+      // Tell dimensionLabs when a message arrives
+      dimensionLabs.logIncoming(bot, team, parsedMessage);
 
       if (parsedMessage.type === 'message' && parsedMessage.channel &&
         parsedMessage.channel[0] === 'D' && parsedMessage.user !== bot.id) {
@@ -42,8 +42,8 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
             channel: parsedMessage.channel
           };
 
-          // Tell dashbot about your response
-          dashbot.logOutgoing(bot, team, reply);
+          // Tell dimensionLabs about your response
+          dimensionLabs.logOutgoing(bot, team, reply);
 
           connection.sendUTF(JSON.stringify(reply));
         } else {
@@ -54,8 +54,8 @@ request('https://slack.com/api/rtm.start?token='+process.env.SLACK_BOT_TOKEN, fu
             channel: parsedMessage.channel
           };
 
-          // Tell dashbot about your response
-          dashbot.logOutgoing(bot, team, reply);
+          // Tell dimensionLabs about your response
+          dimensionLabs.logOutgoing(bot, team, reply);
 
           request.post('https://slack.com/api/chat.postMessage?token='+process.env.SLACK_BOT_TOKEN).form(reply);
         }

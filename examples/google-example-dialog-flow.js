@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 'use strict';
 
 // Boilerplate setup
@@ -9,8 +9,8 @@ const app = express();
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json({type: 'application/json'}));
 
-const dashbot = require('../src/dashbot')(process.env.DASHBOT_API_KEY_GOOGLE,
-  {urlRoot: process.env.DASHBOT_URL_ROOT, debug:true, redact: process.env.DASHBOT_REDACT}).google;
+const dimensionLabs = require('../src/dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_GOOGLE,
+  {urlRoot: process.env.DIMENSIONLABS_URL_ROOT, debug:true, redact: process.env.DIMENSIONLABS_REDACT}).google;
 
 // Create an instance of ApiAiAssistant
 app.post('/', function (request, response) {
@@ -18,7 +18,7 @@ app.post('/', function (request, response) {
     {request: request, response: response});
 
     // second paramter is optional metadata
-    dashbot.configHandler(assistant, {
+  dimensionLabs.configHandler(assistant, {
       we: 'like incoming metadata'
     });
 
@@ -33,7 +33,7 @@ app.post('/', function (request, response) {
     function numberIntent(assistant){
       const number = assistant.getArgument(NUMBER_ARGUMENT)
       // optianally set metadata
-      dashbot.setOutgoingMetadata({
+      dimensionLabs.setOutgoingMetadata({
         we: 'also like outgoing metadata'
       })
       assistant.tell('You said ' + number)

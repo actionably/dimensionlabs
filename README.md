@@ -1,21 +1,21 @@
-# [Dashbot](http://dashbot.io) - Analytics for your bot
+# [Dimension Labs](http://dimensionlabs.io) - Build intelligence around any conversation
 
-Dashbot gives you easy access to analytics for your bot for free.
+Dimension Labs is an A.I.-powered B.I. Platform for your Customer Interactions
 
 ## Setup
 
-Create a free account at [https://www.dashbot.io](https://www.dashbot.io) and get an API_KEY.
+Create an account at [https://www.dimensionlabs.io](https://www.dimensionlabs.io) and get an API_KEY.
 
-dashbot is available via NPM.
+Dimension Labs is available via NPM.
 
 ```bash
-npm install --save dashbot
+npm install --save dimensionlabs
 ```
 
-Follow the instructions at [https://www.dashbot.io/docs](https://www.dashbot.io/docs)
+Follow the instructions at [https://docs.dimensionlabs.io/](https://docs.dimensionlabs.io/)
 
 ## Configuration Options
-Additional configuration options are available when importing the dashbot module. The configuration options are passed through via a config object in the dashbot call. 
+Additional configuration options are available when importing the Dimension Labs module. The configuration options are passed through via a config object in the Dimension Labs call. 
 
 ```javascript
 const configuration = {
@@ -24,7 +24,7 @@ const configuration = {
   'timeout': 1000,
 }
 
-const dashbot = require('dashbot')(process.env.DASHBOT_API_KEY_ALEXA, configuration).alexa;
+const dimensionLabs = require('dimensionlabs')(process.env.DIMENSIONLABS_API_KEY_ALEXA, configuration).alexa;
 ```
 
 The following are the available configuration keys:
@@ -33,9 +33,3 @@ The following are the available configuration keys:
 ***redact*** - ```boolean``` removes personally identifiable information using redact-pii (more info [here](https://www.dashbot.io/docs/pii-redaction/))  
 ***timeout*** - ```number``` timeouts requests after given milliseconds
 
-
-## What's New
-
-### dashbot@next (v12.0.0)
-- removed dependencies redact-pii and dashbot-logger
-    - clients will now have to install these packages separately in order to use the redact option or the alexa log integration

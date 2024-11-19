@@ -1,4 +1,4 @@
-/* Copyright (c) 2016-2019 Dashbot Inc All rights reserved */
+/* Copyright (c) 2016-2025 Dimension Labs Inc All rights reserved */
 const traverse = require('traverse')
 //const redactorPii = require('redact-pii')({salutation: null, valediction: null, name: null, digits: null})
 const _ = require('lodash')
@@ -44,7 +44,7 @@ function loadDefaultRedactor() {
       throw e;
     }
     console.error(e)
-    console.log('Resuming sending message to Dashbot. \nPlease install redact-pii to use the redaction feature.')
+    console.log('Resuming sending message to DimensionLabs. \nPlease install redact-pii to use the redaction feature.')
     return null;
   }
 }
