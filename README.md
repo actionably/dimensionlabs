@@ -30,6 +30,6 @@ const dimensionLabs = require('dimensionlabs')(process.env.DIMENSIONLABS_API_KEY
 The following are the available configuration keys:
 
 ***debug*** - ```boolean``` logs helpful debugging information  
-***redact*** - ```boolean``` removes personally identifiable information using redact-pii (more info [here](https://www.dashbot.io/docs/pii-redaction/))  
+***redact*** - ```boolean``` removes personally identifiable information using redact-pii (more info [here](https://docs.dimensionlabs.io/reference/pii-redaction))  
 ***timeout*** - ```number``` timeouts requests after given milliseconds
 
