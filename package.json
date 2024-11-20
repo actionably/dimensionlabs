@@ -1,11 +1,11 @@
 {
-  "name": "dashbot",
+  "name": "dimensionlabs",
   "version": "12.1.0",
   "description": "Analytics for your bot",
-  "main": "src/dashbot.js",
+  "main": "src/dimensionlabs.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actionably/dashbot.git"
+    "url": "git+https://github.com/actionably/dimensionlabs.git"
   },
   "scripts": {
     "facebook": "nodemon -r dotenv/config examples/facebook-example.js",
@@ -35,12 +35,12 @@
     "data",
     "tools"
   ],
-  "author": "Jesse Hull",
+  "author": "Dimension Labs",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/actionably/dashbot/issues"
+    "url": "https://github.com/actionably/dimensionlabs/issues"
   },
-  "homepage": "https://github.com/actionably/dashbot#readme",
+  "homepage": "https://github.com/actionably/dimensionlabs#readme",
   "devDependencies": {
     "@line/bot-sdk": "^7.3.0",
     "actions-on-google": "^2.14.0",
