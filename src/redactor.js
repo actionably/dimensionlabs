@@ -52,29 +52,34 @@ function loadDefaultRedactor() {
 const redactor = {
   redact: async (obj, customRedactor) => {
     const asyncRedactor = customRedactor || loadDefaultRedactor()
-    const paths = traverse(obj).paths()
-    const matchedPaths = _.filter(paths, function(path) {
-      return _.some(PATH_DESCRIPTIONS, function(pathDesc) {
-        if (pathDesc.length !== path.length) {
-          return false
-        } else {
-          return _.every(pathDesc, function(pathFragment, i) {
-            return (pathFragment === '*' || pathFragment === path[i])
-          })
-        }
+    let cloned = _.cloneDeep(obj)
+    if (asyncRedactor.redactAsync) {
+      const paths = traverse(obj).paths()
+      const matchedPaths = _.filter(paths, function (path) {
+        return _.some(PATH_DESCRIPTIONS, function (pathDesc) {
+          if (pathDesc.length !== path.length) {
+            return false
+          } else {
+            return _.every(pathDesc, function (pathFragment, i) {
+              return (pathFragment === '*' || pathFragment === path[i])
+            })
+          }
+        })
       })
-    })
-    if (!matchedPaths.length || !asyncRedactor) {
-      return obj
-    }
-    const cloned = _.cloneDeep(obj)
-    await Promise.all(_.map(matchedPaths, async (path) => {
-      const value = _.get(cloned, path)
-      if (value && _.isString(value)) {
-        const newValue = await asyncRedactor.redactAsync(value)
-        _.set(cloned, path, newValue)
+      if (!matchedPaths.length || !asyncRedactor) {
+        return obj
       }
-    }))
+      await Promise.all(_.map(matchedPaths, async (path) => {
+        const value = _.get(cloned, path)
+        if (value && _.isString(value)) {
+          const newValue = await asyncRedactor.redactAsync(value)
+          _.set(cloned, path, newValue)
+        }
+      }))
+    }
+    if(asyncRedactor.redactObjectAsync) {
+      cloned = await asyncRedactor.redactObjectAsync(cloned)
+    }
     return cloned
   }
 }
